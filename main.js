@@ -1,6 +1,5 @@
 const jsonServer = require('json-server')
 const server = jsonServer.create()
-const router = jsonServer.router('reading.json')
 const middlewares = jsonServer.defaults()
 
 // Set default middlewares (logger, static, cors and no-cache)
@@ -22,8 +21,13 @@ server.use((req, res, next) => {
   next()
 })
 
-// Use default router
-server.use('/api', router);
+let dbArray = ['reading.json', 'listening.json', 'speaking.json'];
+dbArray.forEach(element => {
+  const router = jsonServer.router(element);
+  // Use default router
+  server.use('/api', router);
+})
+
 
 // Start sever
 const PORT = process.env.PORT || 3000;
